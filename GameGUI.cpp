@@ -4,7 +4,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
+bool G_GUI::LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
 {
     // Load from file
     int image_width = 0;
@@ -95,23 +95,53 @@ bool G_GUI::RenderLauncher(const char *glsl_ver, int &length, int &width, int &h
     return true;
 }
 
+void G_GUI::RenderPostMenu(const bool saveLoaded, bool &playAgain, bool &inputs, bool &loadSameMap)
+{
+    ImGui::Begin("Post-game menu");
+    ImGui::Text("Do you want to play again?");
+
+    if(ImGui::Button("Yes", ImVec2(128, 64)))
+        playAgain = true;
+    
+    ImGui::SameLine(128, 8);
+    if(ImGui::Button("No", ImVec2(128, 64))){
+        playAgain = false;
+        if(ImGui::Button("Confirm", ImVec2(64, 32)))
+            inputs = true;
+    }
+
+    ImGui::NewLine();
+    if(playAgain && saveLoaded){
+        ImGui::Checkbox("Replay map configuration?", &loadSameMap);
+        if(ImGui::Button("Confirm", ImVec2(64, 32)))
+            inputs = true;
+    }
+    else
+        if(ImGui::Button("Confirm", ImVec2(64, 32)))
+            inputs = true;
+    
+    ImGui::End();
+
+    return;
+}
+
 void GameGUI::load_data()
 {
-    this->batRoom.load = LoadTextureFromFile("images/room_bat.bmp", &this->batRoom.texture, &this->batRoom.width, &this->batRoom.height);
+    this->batRoom.load = G_GUI::LoadTextureFromFile("images/room_bat.bmp", &this->batRoom.texture, &this->batRoom.width, &this->batRoom.height);
     IM_ASSERT(this->batRoom.load);
-    this->emptyRoom.load = LoadTextureFromFile("images/room_empty.bmp", &this->emptyRoom.texture, &this->emptyRoom.width, &this->emptyRoom.height);
+    this->emptyRoom.load = G_GUI::LoadTextureFromFile("images/room_empty.bmp", &this->emptyRoom.texture, &this->emptyRoom.width, &this->emptyRoom.height);
     IM_ASSERT(this->emptyRoom.load);
-    this->goldRoom.load = LoadTextureFromFile("images/room_gold.bmp", &this->goldRoom.texture, &this->goldRoom.width, &this->goldRoom.height);
+    this->goldRoom.load = G_GUI::LoadTextureFromFile("images/room_gold.bmp", &this->goldRoom.texture, &this->goldRoom.width, &this->goldRoom.height);
     IM_ASSERT(this->goldRoom.load);
-    this->playerRoom.load = LoadTextureFromFile("images/room_player.bmp", &this->playerRoom.texture, &this->playerRoom.width, &this->playerRoom.height);
+    this->playerRoom.load = G_GUI::LoadTextureFromFile("images/room_player.bmp", &this->playerRoom.texture, &this->playerRoom.width, &this->playerRoom.height);
     IM_ASSERT(this->playerRoom.load);
-    this->wumpusRoom.load = LoadTextureFromFile("images/room_wumpus.bmp", &this->wumpusRoom.texture, &this->wumpusRoom.width, &this->wumpusRoom.height);
+    this->wumpusRoom.load = G_GUI::LoadTextureFromFile("images/room_wumpus.bmp", &this->wumpusRoom.texture, &this->wumpusRoom.width, &this->wumpusRoom.height);
     IM_ASSERT(this->wumpusRoom.load);
-    this->ladderUpRoom.load = LoadTextureFromFile("images/room_laddUp.bmp", &this->ladderUpRoom.texture, &this->ladderUpRoom.width, &this->ladderUpRoom.height);
+    this->ladderUpRoom.load = G_GUI::LoadTextureFromFile("images/room_laddUp.bmp", &this->ladderUpRoom.texture, &this->ladderUpRoom.width, &this->ladderUpRoom.height);
     IM_ASSERT(this->ladderUpRoom.load);
-    this->ladderDownRoom.load = LoadTextureFromFile("images/room_laddDown.bmp", &this->ladderDownRoom.texture, &this->ladderDownRoom.width, &this->ladderDownRoom.height);
+    this->ladderDownRoom.load = G_GUI::LoadTextureFromFile("images/room_laddDown.bmp", &this->ladderDownRoom.texture, &this->ladderDownRoom.width, &this->ladderDownRoom.height);
     IM_ASSERT(this->ladderDownRoom.load);
-    this->pitRoom.load = LoadTextureFromFile("images/room_pit.bmp", &this->pitRoom.texture, &this->pitRoom.width, &this->pitRoom.height);
+    this->pitRoom.load = G_GUI::LoadTextureFromFile("images/room_pit.bmp", &this->pitRoom.texture, &this->pitRoom.width, &this->pitRoom.height);
     IM_ASSERT(this->pitRoom.load);
 
     return;
@@ -175,7 +205,7 @@ void GameGUI::DisplayPercepts(const vector<string> percepts)
     
     ImGui::Begin("Percept Notifications");
 
-    for(int i = 0; i < percepts.size(); ++i){
+    for(int i = 0; i < (int)percepts.size(); ++i){
         string percept = percepts[i];
         ImGui::Text(percept.c_str());
         ImGui::NewLine();
@@ -230,32 +260,3 @@ void GameGUI::DisplayEncounter(const string msg)
     return;
 }
 
-void GameGUI::RenderPostMenu(const bool saveLoaded, bool &playAgain, bool &inputs, bool &loadSameMap)
-{
-    ImGui::Begin("Post-game menu");
-    ImGui::Text("Do you want to play again?");
-
-    if(ImGui::Button("Yes", ImVec2(128, 64)))
-        playAgain = true;
-    
-    ImGui::SameLine(128, 8);
-    if(ImGui::Button("No", ImVec2(128, 64))){
-        playAgain = false;
-        if(ImGui::Button("Confirm", ImVec2(64, 32)))
-            inputs = true;
-    }
-
-    ImGui::NewLine();
-    if(playAgain && saveLoaded){
-        ImGui::Checkbox("Replay map configuration?", &loadSameMap);
-        if(ImGui::Button("Confirm", ImVec2(64, 32)))
-            inputs = true;
-    }
-    else
-        if(ImGui::Button("Confirm", ImVec2(64, 32)))
-            inputs = true;
-    
-    ImGui::End();
-
-    return;
-}

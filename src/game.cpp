@@ -275,7 +275,7 @@ void Game::wumpus_move()
 		return;
 
 	int random = rand() % 3;
-	int tmp;
+
 	//Unless a 0 is generated, the move will execute
 	if(random > 0){
 		this->maps.remove_wumpus();
@@ -407,7 +407,7 @@ void Game::move(char c)
 	}
 	if(this->reverse > 0){
 		c = Game::apply_reverse(c);
-		this-reverse--;
+		this->reverse--;
 	}
 	switch(c){
 		case 'w':

@@ -9,6 +9,8 @@
 namespace G_GUI
 {
     bool RenderLauncher(const char* glsl_ver, int&, int&, int&, bool&);
+    bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height);
+    void RenderPostMenu(const bool saveLoaded, bool &playAgain, bool &inputs, bool &loadSameMap);
 }
 
 struct GImage

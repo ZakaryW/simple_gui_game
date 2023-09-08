@@ -142,13 +142,12 @@ int main(int, char**)
 
         }
         else{
-            GameGUI postUI;
              if(!instance.player_alive())
                 instance.set_save_loaded(true);
             else 
                 instance.set_save_loaded(false);
 
-            postUI.RenderPostMenu(instance.is_save_loaded(), playAgain, inputs, loadSameMap);
+            G_GUI::RenderPostMenu(instance.is_save_loaded(), playAgain, inputs, loadSameMap);
 
             if(inputs){
                 if(!playAgain)
