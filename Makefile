@@ -9,7 +9,7 @@ IMGUI_DIR = ImGui
 SRCS = driver.cpp GameGUI.cpp $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(IMGUI_DIR)/*.cpp)
  
 # Output file
-OUTPUT = driver
+OUTPUT = build
  
 # Libraries
 LIBS = -ldl -lGL -lglfw
