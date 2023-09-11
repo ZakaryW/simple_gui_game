@@ -9,10 +9,6 @@
 #include <GLES2/gl2.h>
 #endif
 #include <GLFW/glfw3.h>
-
-
-//TODO: implement an output window that lets displays output events
-//TODO: implement an input functionality to feed the game state
  
 static void glfw_error_callback(int error, const char* description)
 {
@@ -25,6 +21,7 @@ int main(int, char**)
 	if(!glfwInit())
         return 1;
 
+//ImGui preprocessors//
 #if defined(IMGUI_IMPL_OPENGL_ES2)
     // GL ES 2.0 + GLSL 100
     const char* glsl_version = "#version 100";
@@ -47,6 +44,7 @@ int main(int, char**)
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
 	////////////////////////////
+    
     int len = 7, wid = 7, hei = 1;  //For the grid size of the the game's length, width, and height
     bool debug = false;             //True if the game should be ran in debug mode
 
